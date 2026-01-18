@@ -1,130 +1,122 @@
-# NON-GOALS — shamir-cli
+# Non‑Goals — shamir-cli v0.2.0
 
-## Purpose
+This document explicitly defines what shamir-cli **does not attempt to
+do**. These non‑goals are intentional design decisions, not omissions.
 
-This document explicitly defines what `shamir-cli` is **not** intended to do.
-
-Clear non-goals are a security feature. They prevent scope creep, false assumptions,
-and misuse under operational pressure.
-
----
-
-## 1. No Centralized Trust
-
-`shamir-cli` does NOT:
-- Act as a key escrow system
-- Provide centralized recovery services
-- Maintain shared state across operators
-- Implicitly trust any external authority
-
-Trust decisions remain entirely outside the tool.
+By stating them clearly, the project avoids ambiguity, feature creep,
+and unsafe assumptions by users or contributors.
 
 ---
 
-## 2. No Network Surface
+## 1. Cryptographic Non‑Goals
 
-The project does NOT:
-- Expose APIs
-- Run background services or daemons
-- Communicate over the network
-- Perform remote recovery or verification
+shamir-cli does **not** aim to:
 
-All operations are local and explicit.
-
----
-
-## 3. No Automation of Judgment
-
-`shamir-cli` does NOT:
-- Decide when recovery should occur
-- Automatically select shares
-- Retry failed operations silently
-- Mask errors or degrade gracefully
-
-Human intent is always required.
+- Provide deniability or plausible deniability
+- Hide the existence of a secret or shares
+- Obfuscate cryptographic behavior
+- Implement custom or experimental cryptography
+- Replace full disk or file encryption systems
+- Offer forward secrecy across secret rotations
+- Protect against compromised execution environments
 
 ---
 
-## 4. No Convenience-Driven Abstractions
+## 2. Shamir‑Specific Non‑Goals
 
-The project does NOT:
-- Hide operational complexity
-- Optimize for ease-of-use over clarity
-- Provide GUI or web interfaces
-- Abstract away cryptographic boundaries
+The Shamir implementation does **not**:
 
-Explicitness is preferred over ergonomics.
+- Randomize polynomial coefficients in v0.2.0
+- Authenticate shares on its own
+- Detect malicious but mathematically valid shares
+- Support partial or best‑effort recovery
+- Allow recovery with fewer than the threshold shares
+- Attempt error correction or reconstruction heuristics
 
----
-
-## 5. No Cryptographic Innovation
-
-`shamir-cli` does NOT:
-- Invent new cryptographic primitives
-- Modify Shamir Secret Sharing mathematics
-- Replace established libraries
-- Claim cryptographic novelty
-
-The project focuses on **operational correctness**, not cryptographic research.
+Shamir is used strictly as a threshold mechanism, not an integrity
+mechanism.
 
 ---
 
-## 6. No Persistent Secret Storage
+## 3. AEAD Non‑Goals
 
-The tool does NOT:
-- Store secrets in plaintext
-- Cache recovered secrets
-- Persist secrets beyond runtime memory
-- Manage long-term secret lifecycle
+The AEAD layer does **not**:
 
-Secret handling is transient and controlled.
+- Provide key reuse protection across secrets
+- Support streaming encryption
+- Allow decryption without full authentication
+- Attempt recovery from corrupted ciphertext
+- Hide metadata such as payload length
 
----
-
-## 7. No Implicit Compliance Claims
-
-`shamir-cli` does NOT:
-- Claim regulatory compliance by default
-- Replace formal audits
-- Certify security posture
-- Guarantee legal or regulatory acceptance
-
-Compliance artifacts are optional and contextual.
+Any authentication failure results in immediate failure.
 
 ---
 
-## 8. No Silent Failure
+## 4. Format and Compatibility Non‑Goals
 
-The project does NOT:
-- Fail quietly
-- Auto-correct corrupted state
-- Guess operator intent
-- Continue execution after critical errors
+The share format does **not**:
 
-Failure is designed to be visible and explainable.
+- Support backward compatibility with v0.1.x
+- Auto‑detect or guess format versions
+- Allow optional or missing fields
+- Support binary or compressed formats
+- Permit silent upgrades or downgrades
 
----
-
-## 9. Stability Over Velocity
-
-`shamir-cli` does NOT:
-- Prioritize rapid feature expansion
-- Accept breaking changes lightly
-- Optimize for trend alignment
-- Chase ecosystem popularity
-
-Change is conservative and review-driven.
+Explicit versioning is mandatory.
 
 ---
 
-## 10. Summary
+## 5. Operational Non‑Goals
 
-`shamir-cli` is intentionally limited.
+shamir-cli does **not**:
 
-Its value lies in:
-- Clear boundaries
-- Explicit behavior
-- Auditable operations
-- Predictable failure modes
+- Manage key rotation policies
+- Enforce storage or transport security
+- Provide redundancy or backup orchestration
+- Protect against user operational mistakes
+- Validate real‑world threat models for users
 
-Anything outside these constraints is a deliberate non-goal.
+Operational security remains the user’s responsibility.
+
+---
+
+## 6. Performance Non‑Goals
+
+The project does **not** prioritize:
+
+- Maximum throughput
+- Minimal memory usage
+- Hardware acceleration
+- Constant‑time behavior across all operations
+
+Auditability and correctness take precedence over performance.
+
+---
+
+## 7. UX and Convenience Non‑Goals
+
+shamir-cli does **not** aim to:
+
+- Be “easy” at the cost of safety
+- Hide cryptographic parameters
+- Automatically fix user errors
+- Provide interactive recovery guidance
+- Guess user intent
+
+Explicit input is always required.
+
+---
+
+## 8. Philosophy
+
+If a feature would:
+
+- Reduce auditability
+- Introduce ambiguity
+- Mask failure
+- Encourage unsafe assumptions
+
+…it is intentionally excluded.
+
+Any behavior not explicitly documented as a goal is considered a
+non‑goal by default.
