@@ -101,15 +101,6 @@ No partial recovery or best‑effort behavior is permitted.
 
 ---
 
-## Versioning
-
-- v0.1.x — legacy, unauthenticated (unsupported)
-- v0.2.0 — authenticated, deterministic, fully specified
-
-Mixing versions is forbidden.
-
----
-
 ## Intended Use
 
 shamir-cli is intended for:
