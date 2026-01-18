@@ -116,7 +116,9 @@ It is **not** a general encryption tool or key management system.
 
 ## License
 
-Dual‑licensed. See LICENSE files for details.
+
+MIT License. See `LICENSE` for details.
+
 
 ---
 
