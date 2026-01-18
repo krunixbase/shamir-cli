@@ -1,132 +1,152 @@
-# SECURITY MODEL — shamir-cli
+# Security Model — shamir-cli v0.2.0
 
-## 1. Purpose
+This document describes the security assumptions, guarantees, and
+explicit non-goals of shamir-cli version 0.2.0.
 
-This document defines the security assumptions, threat model, trust boundaries,
-and operational constraints of the `shamir-cli` project.
-
-The goal is not to eliminate risk, but to **make risk explicit, bounded, and auditable**.
-
----
-
-## 2. System Overview
-
-`shamir-cli` is a local, CLI-based toolkit for Shamir Secret Sharing operations.
-
-It provides four isolated agents:
-- Initialization (`init`)
-- Verification (`verify`)
-- Recovery (`recover`)
-- Simulation (`simulate`)
-
-There is no persistent service, daemon, or network interface.
+It complements the cryptographic specification by focusing on attacker
+capabilities, failure behavior, and system boundaries rather than
+algorithmic detail.
 
 ---
 
-## 3. Trust Boundaries
+## 1. Design Goals
 
-### Trusted
+shamir-cli is designed to:
+
+- Prevent silent corruption of secrets
+- Detect any unauthorized modification of data
+- Require explicit threshold satisfaction for recovery
+- Fail closed under all error conditions
+- Remain auditable and deterministic
+
+Security is prioritized over convenience or backward compatibility.
+
+---
+
+## 2. Assets
+
+The primary protected asset is:
+
+- The original secret provided by the user
+
+Secondary assets include:
+
+- Integrity of reconstructed secrets
+- Correctness of threshold enforcement
+- Authenticity of recovered data
+
+---
+
+## 3. Attacker Model
+
+The attacker is assumed to be able to:
+
+- Obtain one or more shares
+- Modify, truncate, or replace share files
+- Replay old or mismatched shares
+- Attempt recovery with insufficient or malformed input
+
+The attacker is **not** assumed to:
+
+- Control the execution environment
+- Break modern cryptographic primitives
+- Perform side-channel or hardware attacks
+
+---
+
+## 4. Trust Boundaries
+
+### 4.1 Trusted Components
+
 - Local execution environment
-- Operator invoking the CLI
-- Cryptographic primitives used for hashing and secret splitting
+- Python runtime and standard library
+- Cryptographic primitives provided by `cryptography`
 
-### Untrusted
-- Storage medium holding share files
-- Transport channels used to distribute shares
-- Any system outside the local execution context
+### 4.2 Untrusted Components
 
-The system assumes **host compromise is possible** and designs for damage limitation.
+- Share storage locations
+- Transport mechanisms
+- External systems holding shares
+- User-provided input files
 
----
-
-## 4. Threat Model
-
-### Considered Threats
-- Partial loss of shares
-- Unauthorized modification of share files
-- Accidental misuse during recovery
-- Insider access to a subset of shares
-- Operational mistakes under stress
-
-### Explicitly Out of Scope
-- Active malware on the host
-- Side-channel attacks
-- Hardware-level compromise
-- Network-based attacks (no network surface exists)
+All external input is treated as hostile.
 
 ---
 
-## 5. Security Properties
+## 5. Security Controls
 
-### Confidentiality
-- Secrets exist only in memory during runtime
-- No plaintext secret persistence
-- Shares are independent and non-informative below threshold
+### 5.1 Authenticated Encryption
 
-### Integrity
-- Share integrity verified via cryptographic hashes
-- Verification is mandatory before recovery in audited workflows
+- Secrets are encrypted and authenticated before splitting
+- Any modification to encrypted data causes recovery failure
+- Associated data binds context to the secret
 
-### Availability
-- Recovery possible as long as threshold is met
-- Simulation agent allows pre-incident testing of availability assumptions
+### 5.2 Threshold Enforcement
 
-### Non-Repudiation
-- Recovery and simulation events are explicitly logged
-- Optional forensic artifacts provide timeline reconstruction
+- Recovery requires at least `k` distinct shares
+- Duplicate indices are rejected
+- Inconsistent share lengths cause failure
 
----
+### 5.3 Deterministic Behavior
 
-## 6. Operational Constraints
-
-- CLI-only interaction
-- Deterministic, scriptable behavior
-- No background processes
-- No automatic retries or hidden state
-
-All actions are **operator-driven and observable**.
+- No hidden randomness in Shamir coefficients
+- Explicit parameters and formats
+- Reproducible behavior for audit and testing
 
 ---
 
-## 7. Failure Modes
+## 6. Failure Semantics
 
-- Insufficient shares → recovery fails safely
-- Corrupted shares → verification fails explicitly
-- Misconfiguration → no implicit fallback behavior
+shamir-cli is explicitly fail-closed.
 
-Failure is designed to be **loud, early, and explainable**.
+Failures include:
 
----
+- Authentication failure
+- Insufficient shares
+- Duplicate or invalid indices
+- Malformed formats
+- Truncated or corrupted data
 
-## 8. Audit & Compliance
-
-- All critical actions can emit artifacts (logs, reports, timelines)
-- Repository annotations provide narrative context
-- Designed to support internal audits and external reviews
+No partial recovery or degraded output is permitted.
 
 ---
 
-## 9. Non-Goals
+## 7. Non-Goals
 
-This project does NOT:
-- Manage key escrow
-- Provide centralized recovery
-- Automate trust decisions
-- Hide operational complexity
-- Optimize for convenience over clarity
+The following are explicitly out of scope:
 
----
-
-## 10. Change Policy
-
-Security-relevant changes must:
-- Preserve backward compatibility where possible
-- Update this document alongside code changes
-- Be reviewable without executing code
+- Protection against side-channel attacks
+- Deniability or plausible deniability
+- Share confidentiality without AEAD
+- Resistance to compromised execution environments
+- Forward secrecy across secret rotations
 
 ---
 
-## 11. Summary
+## 8. Operational Considerations
 
-`shamir-cli` prioritizes explicitness, traceability, and bounded trust.
-Security is treated as an operational discipline, not a feature.
+- Shares should be stored independently
+- Threshold values should reflect realistic loss scenarios
+- Associated data should be stable and meaningful
+- Old shares must not be mixed with new secrets
+
+---
+
+## 9. Upgrade and Compatibility
+
+- FORMAT=2 is mandatory for v0.2.0
+- Legacy v0.1.x formats are unsupported
+- Mixing versions is explicitly forbidden
+
+---
+
+## 10. Security Philosophy
+
+shamir-cli follows these principles:
+
+- Explicit is safer than implicit
+- Failure is safer than recovery
+- Determinism is safer than opacity
+- Auditability is safer than optimization
+
+Any behavior not documented here is considered undefined and unsafe.
