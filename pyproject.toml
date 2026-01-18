@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "shamir-cli"
+version = "0.1.0"
+description = "Modular CLI agents for Shamir Secret Sharing with audit-grade traceability"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+  { name = "krunixbase" }
+]
+
+dependencies = []
+
+[project.optional-dependencies]
+test = [
+  "pytest>=7.0"
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["shamir*", "utils*", "agents*"]
