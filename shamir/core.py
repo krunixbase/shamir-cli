@@ -1,12 +1,17 @@
 """
 Core orchestration layer for Shamir Secret Sharing.
 
-This module provides a stable, backend-agnostic interface for
-splitting and recovering secrets. Cryptographic details are
-delegated to explicit backend implementations.
+This module defines the stable public API for splitting and recovering
+secrets. Cryptographic details are delegated to explicit backend
+implementations.
 
-v0.2.0 introduces support for authenticated secrets and
-GF(256)-based Shamir backends.
+v0.1.x:
+- unauthenticated Shamir Secret Sharing
+- legacy behavior preserved
+
+v0.2.0:
+- GF(256) backend
+- optional AEAD-authenticated secrets
 """
 
 from typing import List, Tuple, Optional
@@ -15,6 +20,10 @@ from shamir.sss_gf256 import split as gf256_split
 from shamir.sss_gf256 import recover as gf256_recover
 from shamir.aead import encrypt_secret, decrypt_secret
 
+
+# ---------------------------------------------------------------------------
+# Exceptions
+# ---------------------------------------------------------------------------
 
 class ShamirError(Exception):
     """Base exception for Shamir core errors."""
@@ -27,6 +36,40 @@ class ValidationError(ShamirError):
 class RecoveryError(ShamirError):
     """Raised when secret recovery fails."""
 
+
+# ---------------------------------------------------------------------------
+# v0.1.x API (preserved)
+# ---------------------------------------------------------------------------
+
+def split(secret: bytes, threshold: int, shares: int) -> List[Tuple[int, bytes]]:
+    """
+    Legacy unauthenticated Shamir split.
+
+    Preserved for backward compatibility.
+    """
+    return split_secret(
+        secret,
+        threshold,
+        shares,
+        authenticated=False,
+    )
+
+
+def recover(shares: List[Tuple[int, bytes]]) -> bytes:
+    """
+    Legacy unauthenticated Shamir recovery.
+
+    Preserved for backward compatibility.
+    """
+    return recover_secret(
+        shares,
+        authenticated=False,
+    )
+
+
+# ---------------------------------------------------------------------------
+# v0.2.0 API (extended)
+# ---------------------------------------------------------------------------
 
 def split_secret(
     secret: bytes,
@@ -86,4 +129,3 @@ def recover_secret(
             raise RecoveryError("Authenticated decryption failed") from exc
 
     return payload
-
