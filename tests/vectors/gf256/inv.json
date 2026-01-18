@@ -1,0 +1,16 @@
+{
+  "description": "GF(256) multiplicative inverse test vectors (AES polynomial 0x11b)",
+  "vectors": [
+    { "a": 1,   "inverse": 1 },
+
+    { "a": 2,   "inverse": 141 },
+    { "a": 3,   "inverse": 246 },
+    { "a": 5,   "inverse": 82 },
+
+    { "a": 9,   "inverse": 79 },
+    { "a": 11,  "inverse": 192 },
+
+    { "a": 0x53, "inverse": 0xca },
+    { "a": 0xca, "inverse": 0x53 }
+  ]
+}
