@@ -1,0 +1,55 @@
+{
+  "description": "Shamir tamper and failure test vectors over GF(256)",
+  "cases": [
+    {
+      "name": "single-byte secret with one corrupted share",
+      "secret": "AA==",
+      "threshold": 2,
+      "total": 3,
+      "shares": [
+        { "index": 1, "data": "AA==" },
+        { "index": 2, "data": "AQ==" },
+        { "index": 3, "data": "AA==" }
+      ],
+      "recover_with": [1, 2],
+      "expected_failure": true
+    },
+    {
+      "name": "multi-byte secret with truncated share",
+      "secret": "AQIDBAU=",
+      "threshold": 3,
+      "total": 5,
+      "shares": [
+        { "index": 1, "data": "AQIDBAU=" },
+        { "index": 2, "data": "AQIDBA==" },
+        { "index": 3, "data": "AQIDBAU=" }
+      ],
+      "recover_with": [1, 2, 3],
+      "expected_failure": true
+    },
+    {
+      "name": "duplicate share indices",
+      "secret": "AQID",
+      "threshold": 2,
+      "total": 3,
+      "shares": [
+        { "index": 1, "data": "AQID" },
+        { "index": 1, "data": "AQID" }
+      ],
+      "recover_with": [1, 1],
+      "expected_failure": true
+    },
+    {
+      "name": "insufficient shares for threshold",
+      "secret": "AQID",
+      "threshold": 3,
+      "total": 5,
+      "shares": [
+        { "index": 1, "data": "AQID" },
+        { "index": 2, "data": "AQID" }
+      ],
+      "recover_with": [1, 2],
+      "expected_failure": true
+    }
+  ]
+}
