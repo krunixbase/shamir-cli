@@ -1,0 +1,18 @@
+{
+  "description": "GF(256) multiplication test vectors (AES polynomial 0x11b)",
+  "vectors": [
+    { "a": 0,   "b": 0,   "result": 0 },
+    { "a": 1,   "b": 0,   "result": 0 },
+    { "a": 0,   "b": 1,   "result": 0 },
+    { "a": 1,   "b": 1,   "result": 1 },
+
+    { "a": 2,   "b": 2,   "result": 4 },
+    { "a": 3,   "b": 3,   "result": 5 },
+
+    { "a": 0x57, "b": 0x83, "result": 0xc1 },
+    { "a": 0x80, "b": 0x02, "result": 0x1b },
+    { "a": 0xff, "b": 0x02, "result": 0xe5 },
+
+    { "a": 0x13, "b": 0x11, "result": 0x38 }
+  ]
+}
