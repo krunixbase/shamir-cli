@@ -1,0 +1,33 @@
+{
+  "description": "Shamir split and recover test vectors over GF(256)",
+  "cases": [
+    {
+      "name": "single-byte secret, threshold 2 of 3",
+      "secret": "AA==",
+      "threshold": 2,
+      "total": 3,
+      "shares": [
+        { "index": 1, "data": "AA==" },
+        { "index": 2, "data": "AA==" },
+        { "index": 3, "data": "AA==" }
+      ],
+      "recover_with": [1, 2],
+      "expected": "AA=="
+    },
+    {
+      "name": "multi-byte secret, threshold 3 of 5",
+      "secret": "AQIDBAU=",
+      "threshold": 3,
+      "total": 5,
+      "shares": [
+        { "index": 1, "data": "AQIDBAU=" },
+        { "index": 2, "data": "AQIDBAU=" },
+        { "index": 3, "data": "AQIDBAU=" },
+        { "index": 4, "data": "AQIDBAU=" },
+        { "index": 5, "data": "AQIDBAU=" }
+      ],
+      "recover_with": [1, 3, 5],
+      "expected": "AQIDBAU="
+    }
+  ]
+}
