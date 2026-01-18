@@ -1,114 +1,135 @@
 # shamir-cli
 
-`shamir-cli` is a modular, CLI-first toolkit for working with
-**Shamir Secret Sharing** in environments that require
-explicit behavior, auditability, and operational discipline.
+**shamir-cli** is a reference‑grade command‑line tool for splitting and
+recovering secrets using Shamir Secret Sharing over GF(256), with
+mandatory authenticated encryption and explicit, auditable formats.
 
-The project focuses on **how secrets are handled operationally**,
-not on inventing new cryptography.
+The project prioritizes **correctness, auditability, and fail‑closed
+security semantics** over convenience or backward compatibility.
+
+---
+
+## Key Properties
+
+- Threshold‑based secret recovery (Shamir Secret Sharing)
+- Finite field arithmetic over GF(256)
+- Mandatory authenticated encryption (AEAD)
+- Deterministic, versioned share format
+- Explicit failure on any corruption or misuse
+- Full test coverage with canonical vectors
 
 ---
 
 ## Design Philosophy
 
-- Explicit over convenient
-- Deterministic over magical
-- Auditable over opaque
-- Local over networked
+shamir-cli is built around the following principles:
 
-Every action is intentional, observable, and reviewable.
+- **Explicit over implicit**
+- **Failure over silent recovery**
+- **Auditability over performance**
+- **Determinism over opacity**
+
+Every cryptographic decision is documented, testable, and intentional.
 
 ---
 
 ## Architecture Overview
 
-The system is composed of isolated CLI agents, each with a single responsibility:
+Secret
+↓
+AEAD (ChaCha20‑Poly1305)
+↓
+Shamir Split (GF256)
+↓
+FORMAT=2 Share Files
 
-- `shamir-init`  
-  Initialize a secret and split it into shares.
-
-- `shamir-verify`  
-  Verify integrity of share artifacts against manifests.
-
-- `shamir-recover`  
-  Recover a secret from a valid threshold of shares.
-
-- `shamir-simulate`  
-  Simulate share loss and test recoverability without touching production state.
-
-Supporting layers:
-- `shamir/core.py` — cryptographic primitives
-- `utils/repo.py` — repository state and manifests
-- `utils/audit.py` — audit and compliance artifacts
-- `utils/forensic.py` — forensic timelines and resilience reports
+Recovery reverses this process and fails immediately on any integrity
+violation.
 
 ---
 
-## What This Project Is For
+## Cryptography
 
-- Local secret management workflows
-- Air‑gapped or restricted environments
-- Audit‑grade documentation and traceability
-- Incident response preparation
-- Teaching and reference implementations
+- Field: GF(256)
+- Polynomial: AES irreducible polynomial (0x11b)
+- AEAD: ChaCha20‑Poly1305
+- KDF: HKDF‑SHA256
 
----
-
-## What This Project Is Not
-
-This project intentionally does **not**:
-- Provide key escrow
-- Run network services
-- Automate trust decisions
-- Hide operational complexity
-- Claim regulatory compliance
-
-See `docs/NON_GOALS.md` for full scope boundaries.
+All parameters are fixed and documented.
 
 ---
 
-## Security Model
+## Share Format
 
-Security assumptions, threat model, and trust boundaries
-are documented explicitly in:
+Shares are stored as human‑readable text files using a strict,
+versioned format:
 
-docs/SECURITY_MODEL.md
+FORMAT=2
+FIELD=GF256
+INDEX=1
+THRESHOLD=3
+TOTAL=5
+SALT=...
+NONCE=...
+DATA=...
 
-
-This document should be read before operational use.
-
----
-
-## Testing
-
-The repository includes deterministic unit tests covering:
-- Cryptographic correctness
-- Repository artifacts
-- Integrity verification
-- Resilience simulation
-
-Tests are designed to support review and audit,
-not performance benchmarking.
+Unsupported versions or malformed files are rejected.
 
 ---
 
-## Status
+## Failure Semantics
 
-Current version: **v0.1.0**
+The system is explicitly **fail‑closed**.
 
-The project is considered **reference‑grade**.
-Changes are conservative and documentation‑driven.
+Failures include:
+- Insufficient shares
+- Duplicate indices
+- Corrupted or truncated data
+- Authentication failure
+- Format violations
+
+No partial recovery or best‑effort behavior is permitted.
+
+---
+
+## Documentation
+
+- `docs/CRYPTO_SPEC.md` — cryptographic design and primitives
+- `docs/SECURITY_MODEL.md` — attacker model and guarantees
+- `docs/NON_GOALS.md` — explicitly excluded features
+- `tests/vectors/` — canonical test vectors
+
+---
+
+## Versioning
+
+- v0.1.x — legacy, unauthenticated (unsupported)
+- v0.2.0 — authenticated, deterministic, fully specified
+
+Mixing versions is forbidden.
+
+---
+
+## Intended Use
+
+shamir-cli is intended for:
+
+- Secure secret escrow
+- Threshold‑based recovery workflows
+- Auditable security systems
+- Long‑term archival of sensitive material
+
+It is **not** a general encryption tool or key management system.
 
 ---
 
 ## License
 
-MIT License
+Dual‑licensed. See LICENSE files for details.
 
 ---
 
-## Final Note
+## Status
 
-`shamir-cli` treats security as an operational discipline.
-If you are looking for convenience, automation, or abstraction,
-this project is intentionally not optimized for that.
+v0.2.0 is **cryptographically complete**, fully tested, and suitable
+for external audit and production use.
