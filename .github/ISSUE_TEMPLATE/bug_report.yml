@@ -1,0 +1,53 @@
+name: Bug report
+description: Report a reproducible issue in the CLI
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: Concise description of the issue.
+    validations:
+      required: true
+
+  - type: textarea
+    id: command
+    attributes:
+      label: Command invocation
+      description: Exact command used, including all flags and arguments.
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: System and build details.
+      placeholder: |
+        OS:
+        Architecture:
+        shamir-cli version / commit:
+        Installation method:
+
+  - type: textarea
+    id: output
+    attributes:
+      label: Output / logs
+      description: Relevant stdout, stderr, or error messages.
+      render: shell
