@@ -3,6 +3,7 @@ description: Report a reproducible issue in the CLI
 title: "[Bug]: "
 labels: ["bug"]
 body:
+
   - type: textarea
     id: summary
     attributes:
