@@ -131,5 +131,17 @@ Dual‑licensed. See LICENSE files for details.
 
 ## Status
 
-v0.2.0 is **cryptographically complete**, fully tested, and suitable
-for external audit and production use.
+**Stable contract release.**
+
+CLI behavior and FORMAT=2 are considered production‑ready and frozen
+as of **v0.2.1**. Future releases in the v0.2.x series will not introduce
+breaking changes.
+
+## Version
+
+Current stable release: **v0.2.1**
+
+This release defines the canonical CLI behavior and the FORMAT=2 share
+serialization contract. All v0.2.x releases are backward‑compatible
+with this version.
+
