@@ -1,0 +1,35 @@
+{
+  "description": "AEAD authentication failure test vectors",
+  "cases": [
+    {
+      "name": "modified ciphertext",
+      "secret": "AQIDBAU=",
+      "associated_data": null,
+      "tamper": "ciphertext"
+    },
+    {
+      "name": "modified nonce",
+      "secret": "AQIDBAU=",
+      "associated_data": null,
+      "tamper": "nonce"
+    },
+    {
+      "name": "modified salt",
+      "secret": "AQIDBAU=",
+      "associated_data": null,
+      "tamper": "salt"
+    },
+    {
+      "name": "wrong associated data",
+      "secret": "AQIDBAU=",
+      "associated_data": "Y29udGV4dC1pbmZv",
+      "tamper": "associated_data"
+    },
+    {
+      "name": "truncated payload",
+      "secret": "AQIDBAU=",
+      "associated_data": null,
+      "tamper": "truncate"
+    }
+  ]
+}
