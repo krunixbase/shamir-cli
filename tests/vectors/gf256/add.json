@@ -1,0 +1,16 @@
+{
+  "description": "GF(256) addition test vectors (XOR)",
+  "vectors": [
+    { "a": 0,   "b": 0,   "result": 0 },
+    { "a": 1,   "b": 0,   "result": 1 },
+    { "a": 0,   "b": 1,   "result": 1 },
+    { "a": 1,   "b": 1,   "result": 0 },
+
+    { "a": 15,  "b": 27,  "result": 20 },
+    { "a": 255, "b": 1,   "result": 254 },
+    { "a": 128, "b": 128, "result": 0 },
+
+    { "a": 170, "b": 85,  "result": 255 },
+    { "a": 204, "b": 51,  "result": 255 }
+  ]
+}
