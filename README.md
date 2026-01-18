@@ -119,7 +119,6 @@ It is **not** a general encryption tool or key management system.
 
 MIT License. See `LICENSE` for details.
 
-
 ---
 
 ## Status
