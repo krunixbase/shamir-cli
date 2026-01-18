@@ -1,0 +1,25 @@
+{
+  "description": "AEAD encrypt/decrypt success test vectors",
+  "cases": [
+    {
+      "name": "single-byte secret without associated data",
+      "secret": "AA==",
+      "associated_data": null
+    },
+    {
+      "name": "multi-byte secret without associated data",
+      "secret": "AQIDBAU=",
+      "associated_data": null
+    },
+    {
+      "name": "multi-byte secret with associated data",
+      "secret": "AQIDBAU=",
+      "associated_data": "Y29udGV4dC1pbmZv"
+    },
+    {
+      "name": "longer secret with associated data",
+      "secret": "VGhpcyBpcyBhIHRlc3Qgc2VjcmV0Lg==",
+      "associated_data": "c2hhbWlyLWNsaS12Mg=="
+    }
+  ]
+}
