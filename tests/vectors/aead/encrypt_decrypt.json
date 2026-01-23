@@ -1,25 +1,26 @@
 {
-  "description": "AEAD encrypt/decrypt success test vectors",
+  "_note": "Test vectors only. This file contains synthetic data for AEAD tests. No real secrets or API keys.",
+  "description": "AEAD encrypt/decrypt success test vectors (synthetic, non-sensitive)",
   "cases": [
     {
-      "name": "single-byte secret without associated data",
-      "secret": "AA==",
+      "name": "single-byte synthetic secret without associated data",
+      "secret": "dGVzdA==",
       "associated_data": null
     },
     {
-      "name": "multi-byte secret without associated data",
-      "secret": "AQIDBAU=",
+      "name": "multi-byte synthetic secret without associated data",
+      "secret": "dGVzdC1zZWNyZXQ=",
       "associated_data": null
     },
     {
-      "name": "multi-byte secret with associated data",
-      "secret": "AQIDBAU=",
-      "associated_data": "Y29udGV4dC1pbmZv"
+      "name": "multi-byte synthetic secret with associated data",
+      "secret": "dGVzdC1zZWNyZXQ=",
+      "associated_data": "dGVzdC1hZA=="
     },
     {
-      "name": "longer secret with associated data",
-      "secret": "VGhpcyBpcyBhIHRlc3Qgc2VjcmV0Lg==",
-      "associated_data": "c2hhbWlyLWNsaS12Mg=="
+      "name": "longer synthetic secret with associated data",
+      "secret": "c3ludGhldGljLXRlc3Qtc2VjcmV0",
+      "associated_data": "c3ludGhldGljLWFzc29jaWF0ZWQtZGF0YQ=="
     }
   ]
 }
