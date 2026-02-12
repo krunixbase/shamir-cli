@@ -23,6 +23,7 @@
     {
       "name": "longer synthetic secret with associated data",
       "secret": "TEST_SECRET_01"
+,
       "associated_data": "c3ludGhldGljLWFzc29jaWF0ZWQtZGF0YQ=="
     }
   ]
