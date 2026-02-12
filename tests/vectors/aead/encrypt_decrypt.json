@@ -4,22 +4,26 @@
   "cases": [
     {
       "name": "single-byte synthetic secret without associated data",
-      "secret": "dGVzdA==",
+      "secret": "TEST_SECRET_01"
+,
       "associated_data": null
     },
     {
       "name": "multi-byte synthetic secret without associated data",
-      "secret": "dGVzdC1zZWNyZXQ=",
+      "secret": "TEST_SECRET_01"
+,
       "associated_data": null
     },
     {
       "name": "multi-byte synthetic secret with associated data",
-      "secret": "dGVzdC1zZWNyZXQ=",
+      "secret": "TEST_SECRET_01"
+,
       "associated_data": "dGVzdC1hZA=="
     },
     {
       "name": "longer synthetic secret with associated data",
-      "secret": "c3ludGhldGljLXRlc3Qtc2VjcmV0",
+      "secret": "TEST_SECRET_01"
+,
       "associated_data": "c3ludGhldGljLWFzc29jaWF0ZWQtZGF0YQ=="
     }
   ]
