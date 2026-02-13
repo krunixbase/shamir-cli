@@ -116,17 +116,12 @@ It is not a general-purpose encryption tool or key management system.
 
 ## Status
 
-**Institutional reference release.**
+This tool is built on top of the sealed `shamir` v1.0.0 reference
+implementation.
 
-Version **v1.0.0** formally seals the public interface, cryptographic behavior,
-and data formats.
-
-The **v1.0.x series is designated as the Long-Term Support (LTS) line**.
-Only critical security fixes, non-behavioral bug fixes, and documentation
-corrections are permitted.
-
-No new features or behavioral changes are planned outside of a new major
-version.
+The CLI acts as a thin, non-contractual adapter over the stable cryptographic
+core and encoding layers. Its behavior is expected to remain stable, with
+changes being additive and deliberate.
 
 ---
 
