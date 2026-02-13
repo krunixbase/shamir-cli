@@ -1,22 +1,22 @@
 # shamir-cli
 
-**shamir-cli** is a reference‑grade command‑line tool for splitting and
-recovering secrets using Shamir Secret Sharing over GF(256), with
-mandatory authenticated encryption and explicit, auditable formats.
+shamir-cli is a reference-grade command-line tool for splitting and recovering
+secrets using Shamir Secret Sharing over GF(256), with mandatory authenticated
+encryption and explicit, auditable formats.
 
-The project prioritizes **correctness, auditability, and fail‑closed
-security semantics** over convenience or backward compatibility.
+The project prioritizes correctness, auditability, and fail-closed security
+semantics over convenience, performance, or feature growth.
 
 ---
 
 ## Key Properties
 
-- Threshold‑based secret recovery (Shamir Secret Sharing)
+- Threshold-based secret recovery (Shamir Secret Sharing)
 - Finite field arithmetic over GF(256)
 - Mandatory authenticated encryption (AEAD)
-- Deterministic, versioned share format
+- Deterministic, versioned share format (FORMAT=2)
 - Explicit failure on any corruption or misuse
-- Full test coverage with canonical vectors
+- Canonical test vectors and full cryptographic coverage
 
 ---
 
@@ -24,12 +24,13 @@ security semantics** over convenience or backward compatibility.
 
 shamir-cli is built around the following principles:
 
-- **Explicit over implicit**
-- **Failure over silent recovery**
-- **Auditability over performance**
-- **Determinism over opacity**
+- Explicit over implicit behavior
+- Failure over silent recovery
+- Auditability over performance
+- Determinism over opacity
 
-Every cryptographic decision is documented, testable, and intentional.
+Every cryptographic and operational decision is documented, testable,
+and intentional.
 
 ---
 
@@ -37,14 +38,13 @@ Every cryptographic decision is documented, testable, and intentional.
 
 Secret
 ↓
-AEAD (ChaCha20‑Poly1305)
+AEAD (ChaCha20-Poly1305)
 ↓
 Shamir Split (GF256)
 ↓
 FORMAT=2 Share Files
 
-Recovery reverses this process and fails immediately on any integrity
-violation.
+Recovery reverses this process and fails immediately on any integrity violation.
 
 ---
 
@@ -52,52 +52,52 @@ violation.
 
 - Field: GF(256)
 - Polynomial: AES irreducible polynomial (0x11b)
-- AEAD: ChaCha20‑Poly1305
-- KDF: HKDF‑SHA256
+- AEAD: ChaCha20-Poly1305
+- KDF: HKDF-SHA256
 
-All parameters are fixed and documented.
+All parameters are fixed, documented, and contractually frozen.
 
 ---
 
 ## Share Format
 
-Shares are stored as human‑readable text files using a strict,
-versioned format:
+Shares are stored as human-readable text files using a strict, versioned format:
 
-FORMAT=2
-FIELD=GF256
-INDEX=1
-THRESHOLD=3
-TOTAL=5
-SALT=...
-NONCE=...
-DATA=...
+FORMAT=2 FIELD=GF256 INDEX=1 THRESHOLD=3 TOTAL=5 SALT=... NONCE=... DATA=...
 
-Unsupported versions or malformed files are rejected.
+Unsupported versions or malformed files are rejected without fallback.
 
 ---
 
 ## Failure Semantics
 
-The system is explicitly **fail‑closed**.
+The system is explicitly fail-closed.
 
 Failures include:
+
 - Insufficient shares
 - Duplicate indices
 - Corrupted or truncated data
 - Authentication failure
 - Format violations
 
-No partial recovery or best‑effort behavior is permitted.
+No partial recovery or best-effort behavior is permitted.
 
 ---
 
 ## Documentation
 
-- `docs/CRYPTO_SPEC.md` — cryptographic design and primitives
-- `docs/SECURITY_MODEL.md` — attacker model and guarantees
-- `docs/NON_GOALS.md` — explicitly excluded features
-- `tests/vectors/` — canonical test vectors
+Normative and authoritative documentation is located in `docs/`:
+
+- `CRYPTO_SPEC.md` — cryptographic design and primitives
+- `FORMAT.md` — canonical FORMAT=2 specification
+- `SECURITY_MODEL.md` — attacker model and guarantees
+- `CLI_CONTRACT.md` — frozen CLI behavior and exit semantics
+- `AGENTS_CONTRACT.md` — explicitly unstable agents subsystem
+- `VERSIONING_POLICY.md` — versioning and compatibility rules
+- `LTS_POLICY.md` — long-term support guarantees
+- `SECURITY_RESPONSE.md` — vulnerability reporting and response process
+- `NON_GOALS.md` — explicitly excluded features
 
 ---
 
@@ -106,34 +106,30 @@ No partial recovery or best‑effort behavior is permitted.
 shamir-cli is intended for:
 
 - Secure secret escrow
-- Threshold‑based recovery workflows
+- Threshold-based recovery workflows
 - Auditable security systems
-- Long‑term archival of sensitive material
+- Long-term archival of sensitive material
 
-It is **not** a general encryption tool or key management system.
-
----
-
-## License
-
-
-MIT License. See `LICENSE` for details.
+It is not a general-purpose encryption tool or key management system.
 
 ---
 
 ## Status
 
-**Stable contract release.**
+**Institutional reference release.**
 
-CLI behavior and FORMAT=2 are considered production‑ready and frozen
-as of **v0.2.1**. Future releases in the v0.2.x series will not introduce
-breaking changes.
+Version **v1.0.0** formally seals the public interface, cryptographic behavior,
+and data formats.
 
-## Version
+The **v1.0.x series is designated as the Long-Term Support (LTS) line**.
+Only critical security fixes, non-behavioral bug fixes, and documentation
+corrections are permitted.
 
-Current stable release: **v0.2.1**
+No new features or behavioral changes are planned outside of a new major
+version.
 
-This release defines the canonical CLI behavior and the FORMAT=2 share
-serialization contract. All v0.2.x releases are backward‑compatible
-with this version.
+---
 
+## License
+
+MIT License. See `LICENSE` for details.
